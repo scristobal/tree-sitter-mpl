@@ -1,0 +1,20 @@
+{
+  "grammars": [
+    {
+      "name": "mpl",
+      "camelcase": "Mpl",
+      "scope": "source.mpl",
+      "path": ".",
+      "file-types": [
+        "mpl"
+      ],
+      "highlights": "queries/mpl/highlights.scm",
+      "injection-regex": "^mpl$"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT OR Apache-2.0",
+    "description": "Tree-sitter grammar for Axiom Metrics Processing Language (MPL)"
+  }
+}

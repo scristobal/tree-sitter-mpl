@@ -1,0 +1,27 @@
+{
+  "name": "tree-sitter-mpl",
+  "version": "0.1.0",
+  "description": "Tree-sitter grammar for Axiom Metrics Processing Language (MPL)",
+  "keywords": [
+    "tree-sitter",
+    "mpl"
+  ],
+  "license": "MIT OR Apache-2.0",
+  "tree-sitter": [
+    {
+      "scope": "source.mpl",
+      "file-types": [
+        "mpl"
+      ],
+      "highlights": "queries/mpl/highlights.scm",
+      "injection-regex": "^mpl$"
+    }
+  ],
+  "scripts": {
+    "check": "tsc --allowJs --checkJs --noEmit grammar.js"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "^0.25.0",
+    "typescript": "^6.0.3"
+  }
+}
