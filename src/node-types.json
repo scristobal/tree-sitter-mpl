@@ -1,0 +1,1990 @@
+[
+  {
+    "type": "align",
+    "named": true,
+    "fields": {
+      "function": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "func",
+            "named": true
+          }
+        ]
+      },
+      "period": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "time_relative_parameterized",
+            "named": true
+          }
+        ]
+      },
+      "window": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "time_relative_parameterized",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "and_filter",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "and_filter",
+            "named": true
+          },
+          {
+            "type": "filter_atom",
+            "named": true
+          },
+          {
+            "type": "not_filter",
+            "named": true
+          },
+          {
+            "type": "or_filter",
+            "named": true
+          },
+          {
+            "type": "parenthesized_filter",
+            "named": true
+          }
+        ]
+      },
+      "right": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "and_filter",
+            "named": true
+          },
+          {
+            "type": "filter_atom",
+            "named": true
+          },
+          {
+            "type": "not_filter",
+            "named": true
+          },
+          {
+            "type": "or_filter",
+            "named": true
+          },
+          {
+            "type": "parenthesized_filter",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "as_clause",
+    "named": true,
+    "fields": {
+      "alias": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "metric_name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "bool",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "bucket_by",
+    "named": true,
+    "fields": {
+      "function": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "bucket_fn_call",
+            "named": true
+          }
+        ]
+      },
+      "tags": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "tags",
+            "named": true
+          }
+        ]
+      },
+      "window": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "time_relative_parameterized",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "bucket_by_fn",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "bucket_conversion",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "bucket_fn_call",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "bucket_fn_call_simple",
+          "named": true
+        },
+        {
+          "type": "bucket_fn_call_with_conversion",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "bucket_fn_call_simple",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "bucket_by_fn",
+            "named": true
+          }
+        ]
+      },
+      "specs": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "bucket_specs",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "bucket_fn_call_with_conversion",
+    "named": true,
+    "fields": {
+      "conversion": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "bucket_conversion",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "bucket_by_with_conversion_fn",
+            "named": true
+          }
+        ]
+      },
+      "specs": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "bucket_specs",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "bucket_spec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "bucket_specs",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "bucket_spec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "cmp",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "cmp_re",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "compute_fn",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "compute_op",
+          "named": true
+        },
+        {
+          "type": "func",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "compute_op",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "compute_query",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "query",
+            "named": true
+          }
+        ]
+      },
+      "right": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "query",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "compute_rule",
+          "named": true
+        },
+        {
+          "type": "pipe_rule",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "compute_rule",
+    "named": true,
+    "fields": {
+      "function": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "compute_fn",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "metric_name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "const",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "bool",
+          "named": true
+        },
+        {
+          "type": "float",
+          "named": true
+        },
+        {
+          "type": "inf",
+          "named": true
+        },
+        {
+          "type": "int",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "directive",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "const",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "escaped_identifier",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "escape_sequence",
+          "named": true
+        },
+        {
+          "type": "escaped_identifier_content",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "expr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "const",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "param_ident",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "extend_expr",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expr",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "extend_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "extend_expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "filter_atom",
+    "named": true,
+    "fields": {
+      "tag": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "is_filter",
+          "named": true
+        },
+        {
+          "type": "regex_filter",
+          "named": true
+        },
+        {
+          "type": "value_filter",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "filter_expr",
+    "named": true,
+    "fields": {
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "and_filter",
+            "named": true
+          },
+          {
+            "type": "filter_atom",
+            "named": true
+          },
+          {
+            "type": "not_filter",
+            "named": true
+          },
+          {
+            "type": "or_filter",
+            "named": true
+          },
+          {
+            "type": "parenthesized_filter",
+            "named": true
+          }
+        ]
+      },
+      "keyword": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "filter",
+            "named": false
+          },
+          {
+            "type": "where",
+            "named": false
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "filter_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "filter_expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "func",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "module",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "group_by",
+    "named": true,
+    "fields": {
+      "function": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "func",
+            "named": true
+          }
+        ]
+      },
+      "tags": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "tags",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "identifier",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "escaped_identifier",
+          "named": true
+        },
+        {
+          "type": "plain_identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ifdef_rule",
+    "named": true,
+    "fields": {
+      "else": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "filter_expr",
+            "named": true
+          }
+        ]
+      },
+      "parameter": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "param_ident",
+            "named": true
+          }
+        ]
+      },
+      "then": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "filter_expr",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "interpolation",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "is_filter",
+    "named": true,
+    "fields": {
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "tag_type",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "join",
+    "named": true,
+    "fields": {
+      "by": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "tags",
+            "named": true
+          }
+        ]
+      },
+      "source": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "metric_id",
+            "named": true
+          }
+        ]
+      },
+      "tags": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "tags",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "map",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "map_eval",
+          "named": true
+        },
+        {
+          "type": "map_fn",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "map_calc_op",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "map_eval",
+    "named": true,
+    "fields": {
+      "operator": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "map_calc_op",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "map_fn",
+    "named": true,
+    "fields": {
+      "argument": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          }
+        ]
+      },
+      "function": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "func",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "metric_id",
+    "named": true,
+    "fields": {
+      "dataset": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "param_ident",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "metric_name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "metric_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "module",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "not_filter",
+    "named": true,
+    "fields": {
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "and_filter",
+            "named": true
+          },
+          {
+            "type": "filter_atom",
+            "named": true
+          },
+          {
+            "type": "not_filter",
+            "named": true
+          },
+          {
+            "type": "or_filter",
+            "named": true
+          },
+          {
+            "type": "parenthesized_filter",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "number",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "float",
+          "named": true
+        },
+        {
+          "type": "inf",
+          "named": true
+        },
+        {
+          "type": "int",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "optional_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "param_native_type",
+          "named": true
+        },
+        {
+          "type": "tag_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "or_filter",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "and_filter",
+            "named": true
+          },
+          {
+            "type": "filter_atom",
+            "named": true
+          },
+          {
+            "type": "not_filter",
+            "named": true
+          },
+          {
+            "type": "or_filter",
+            "named": true
+          },
+          {
+            "type": "parenthesized_filter",
+            "named": true
+          }
+        ]
+      },
+      "right": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "and_filter",
+            "named": true
+          },
+          {
+            "type": "filter_atom",
+            "named": true
+          },
+          {
+            "type": "not_filter",
+            "named": true
+          },
+          {
+            "type": "or_filter",
+            "named": true
+          },
+          {
+            "type": "parenthesized_filter",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "param",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "param_ident",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "param_type",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "param_ident",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "param_native_type",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "param_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "optional_type",
+          "named": true
+        },
+        {
+          "type": "param_native_type",
+          "named": true
+        },
+        {
+          "type": "tag_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "parenthesized_filter",
+    "named": true,
+    "fields": {
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "and_filter",
+            "named": true
+          },
+          {
+            "type": "filter_atom",
+            "named": true
+          },
+          {
+            "type": "not_filter",
+            "named": true
+          },
+          {
+            "type": "or_filter",
+            "named": true
+          },
+          {
+            "type": "parenthesized_filter",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "pipe_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "align",
+          "named": true
+        },
+        {
+          "type": "as_clause",
+          "named": true
+        },
+        {
+          "type": "bucket_by",
+          "named": true
+        },
+        {
+          "type": "group_by",
+          "named": true
+        },
+        {
+          "type": "join",
+          "named": true
+        },
+        {
+          "type": "map",
+          "named": true
+        },
+        {
+          "type": "replace",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "query",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "compute_query",
+          "named": true
+        },
+        {
+          "type": "simple_query",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "regex_filter",
+    "named": true,
+    "fields": {
+      "operator": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "cmp_re",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "regex",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "replace",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "replace_rename",
+          "named": true
+        },
+        {
+          "type": "replace_rename_tag",
+          "named": true
+        },
+        {
+          "type": "replace_tag",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "replace_rename",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "tag": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "replace_rename_tag",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "replacement": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "regex_replace",
+            "named": true
+          }
+        ]
+      },
+      "tag": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "replace_tag",
+    "named": true,
+    "fields": {
+      "replacement": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "regex_replace",
+            "named": true
+          }
+        ]
+      },
+      "tag": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "sample_expr",
+    "named": true,
+    "fields": {
+      "ratio": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "sample_rule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "sample_expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "simple_query",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "extend_rule",
+          "named": true
+        },
+        {
+          "type": "filter_rule",
+          "named": true
+        },
+        {
+          "type": "ifdef_rule",
+          "named": true
+        },
+        {
+          "type": "pipe_rule",
+          "named": true
+        },
+        {
+          "type": "sample_rule",
+          "named": true
+        },
+        {
+          "type": "source",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "source",
+    "named": true,
+    "fields": {
+      "metric": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "metric_id",
+            "named": true
+          }
+        ]
+      },
+      "time_range": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "time_range",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "as_clause",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "source_file",
+    "named": true,
+    "root": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "directive",
+          "named": true
+        },
+        {
+          "type": "param",
+          "named": true
+        },
+        {
+          "type": "query",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "string",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "escape_sequence",
+          "named": true
+        },
+        {
+          "type": "interpolation",
+          "named": true
+        },
+        {
+          "type": "string_content",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "tag_type",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "tags",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "time",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "time_modifier",
+          "named": true
+        },
+        {
+          "type": "time_relative",
+          "named": true
+        },
+        {
+          "type": "time_rfc_3339",
+          "named": true
+        },
+        {
+          "type": "time_timestamp",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "time_modifier",
+    "named": true,
+    "fields": {
+      "direction": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "+",
+            "named": false
+          },
+          {
+            "type": "-",
+            "named": false
+          }
+        ]
+      },
+      "duration": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "time_relative",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "time_range",
+    "named": true,
+    "fields": {
+      "end": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "time",
+            "named": true
+          }
+        ]
+      },
+      "start": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "time",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "time_relative_parameterized",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "param_ident",
+          "named": true
+        },
+        {
+          "type": "time_relative",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "value_filter",
+    "named": true,
+    "fields": {
+      "operator": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "cmp",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expr",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "!=",
+    "named": false
+  },
+  {
+    "type": "\"",
+    "named": false
+  },
+  {
+    "type": "$",
+    "named": false
+  },
+  {
+    "type": "${",
+    "named": false
+  },
+  {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
+  },
+  {
+    "type": "*",
+    "named": false
+  },
+  {
+    "type": "+",
+    "named": false
+  },
+  {
+    "type": ",",
+    "named": false
+  },
+  {
+    "type": "-",
+    "named": false
+  },
+  {
+    "type": "..",
+    "named": false
+  },
+  {
+    "type": "/",
+    "named": false
+  },
+  {
+    "type": ":",
+    "named": false
+  },
+  {
+    "type": "::",
+    "named": false
+  },
+  {
+    "type": ";",
+    "named": false
+  },
+  {
+    "type": "<",
+    "named": false
+  },
+  {
+    "type": "<=",
+    "named": false
+  },
+  {
+    "type": "=",
+    "named": false
+  },
+  {
+    "type": "==",
+    "named": false
+  },
+  {
+    "type": ">",
+    "named": false
+  },
+  {
+    "type": ">=",
+    "named": false
+  },
+  {
+    "type": "Dataset",
+    "named": false
+  },
+  {
+    "type": "Duration",
+    "named": false
+  },
+  {
+    "type": "Option",
+    "named": false
+  },
+  {
+    "type": "Regex",
+    "named": false
+  },
+  {
+    "type": "[",
+    "named": false
+  },
+  {
+    "type": "]",
+    "named": false
+  },
+  {
+    "type": "`",
+    "named": false
+  },
+  {
+    "type": "align",
+    "named": false
+  },
+  {
+    "type": "and",
+    "named": false
+  },
+  {
+    "type": "as",
+    "named": false
+  },
+  {
+    "type": "avg",
+    "named": false
+  },
+  {
+    "type": "bool",
+    "named": false
+  },
+  {
+    "type": "bucket",
+    "named": false
+  },
+  {
+    "type": "bucket_by_with_conversion_fn",
+    "named": true
+  },
+  {
+    "type": "by",
+    "named": false
+  },
+  {
+    "type": "comment",
+    "named": true,
+    "extra": true
+  },
+  {
+    "type": "compute",
+    "named": false
+  },
+  {
+    "type": "count",
+    "named": false
+  },
+  {
+    "type": "duration",
+    "named": false
+  },
+  {
+    "type": "else",
+    "named": false
+  },
+  {
+    "type": "escape_sequence",
+    "named": true
+  },
+  {
+    "type": "escaped_identifier_content",
+    "named": true
+  },
+  {
+    "type": "extend",
+    "named": false
+  },
+  {
+    "type": "false",
+    "named": false
+  },
+  {
+    "type": "filter",
+    "named": false
+  },
+  {
+    "type": "float",
+    "named": false
+  },
+  {
+    "type": "float",
+    "named": true
+  },
+  {
+    "type": "from",
+    "named": false
+  },
+  {
+    "type": "group",
+    "named": false
+  },
+  {
+    "type": "histogram",
+    "named": false
+  },
+  {
+    "type": "ifdef",
+    "named": false
+  },
+  {
+    "type": "increase",
+    "named": false
+  },
+  {
+    "type": "inf",
+    "named": true
+  },
+  {
+    "type": "int",
+    "named": false
+  },
+  {
+    "type": "int",
+    "named": true
+  },
+  {
+    "type": "interpolate_delta_histogram",
+    "named": false
+  },
+  {
+    "type": "is",
+    "named": false
+  },
+  {
+    "type": "join",
+    "named": false
+  },
+  {
+    "type": "map",
+    "named": false
+  },
+  {
+    "type": "max",
+    "named": false
+  },
+  {
+    "type": "min",
+    "named": false
+  },
+  {
+    "type": "not",
+    "named": false
+  },
+  {
+    "type": "or",
+    "named": false
+  },
+  {
+    "type": "over",
+    "named": false
+  },
+  {
+    "type": "param",
+    "named": false
+  },
+  {
+    "type": "plain_identifier",
+    "named": true
+  },
+  {
+    "type": "rate",
+    "named": false
+  },
+  {
+    "type": "regex",
+    "named": true
+  },
+  {
+    "type": "regex_replace",
+    "named": true
+  },
+  {
+    "type": "replace",
+    "named": false
+  },
+  {
+    "type": "sample",
+    "named": false
+  },
+  {
+    "type": "set",
+    "named": false
+  },
+  {
+    "type": "string",
+    "named": false
+  },
+  {
+    "type": "string_content",
+    "named": true
+  },
+  {
+    "type": "sum",
+    "named": false
+  },
+  {
+    "type": "time_relative",
+    "named": true
+  },
+  {
+    "type": "time_rfc_3339",
+    "named": true
+  },
+  {
+    "type": "time_timestamp",
+    "named": true
+  },
+  {
+    "type": "to",
+    "named": false
+  },
+  {
+    "type": "true",
+    "named": false
+  },
+  {
+    "type": "using",
+    "named": false
+  },
+  {
+    "type": "where",
+    "named": false
+  },
+  {
+    "type": "{",
+    "named": false
+  },
+  {
+    "type": "|",
+    "named": false
+  },
+  {
+    "type": "}",
+    "named": false
+  },
+  {
+    "type": "~",
+    "named": false
+  }
+]
