@@ -1,0 +1,48 @@
+==================
+Replace and extend
+==================
+
+app:requests
+| replace route ~ #s/api/v1/
+| replace service = app
+| extend normalized = service, fixed = "yes"
+
+---
+
+(source_file
+  (query
+    (simple_query
+      (source
+        (metric_id
+          (identifier
+            (plain_identifier))
+          (metric_name
+            (identifier
+              (plain_identifier)))))
+      (pipe_rule
+        (replace
+          (replace_tag
+            (identifier
+              (plain_identifier))
+            (regex_replace))))
+      (pipe_rule
+        (replace
+          (replace_rename
+            (identifier
+              (plain_identifier))
+            (identifier
+              (plain_identifier)))))
+      (extend_rule
+        (extend_expr
+          (identifier
+            (plain_identifier))
+          (expr
+            (identifier
+              (plain_identifier))))
+        (extend_expr
+          (identifier
+            (plain_identifier))
+          (expr
+            (const
+              (string
+                (string_content)))))))))

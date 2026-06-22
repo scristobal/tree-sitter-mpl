@@ -1,0 +1,36 @@
+==================
+Compute query
+==================
+
+(app:errors, app:requests)
+| compute error_rate using /
+
+---
+
+(source_file
+  (query
+    (compute_query
+      (query
+        (simple_query
+          (source
+            (metric_id
+              (identifier
+                (plain_identifier))
+              (metric_name
+                (identifier
+                  (plain_identifier)))))))
+      (query
+        (simple_query
+          (source
+            (metric_id
+              (identifier
+                (plain_identifier))
+              (metric_name
+                (identifier
+                  (plain_identifier)))))))
+      (compute_rule
+        (metric_name
+          (identifier
+            (plain_identifier)))
+        (compute_fn
+          (compute_op))))))

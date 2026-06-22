@@ -1,0 +1,49 @@
+==================
+Boolean precedence
+==================
+
+app:requests
+| where not status == 200 and method == "GET" or cached == false
+
+---
+
+(source_file
+  (query
+    (simple_query
+      (source
+        (metric_id
+          (identifier
+            (plain_identifier))
+          (metric_name
+            (identifier
+              (plain_identifier)))))
+      (filter_rule
+        (filter_expr
+          (or_filter
+            (and_filter
+              (not_filter
+                (filter_atom
+                  (identifier
+                    (plain_identifier))
+                  (value_filter
+                    (cmp)
+                    (expr
+                      (const
+                        (int))))))
+              (filter_atom
+                (identifier
+                  (plain_identifier))
+                (value_filter
+                  (cmp)
+                  (expr
+                    (const
+                      (string
+                        (string_content)))))))
+            (filter_atom
+              (identifier
+                (plain_identifier))
+              (value_filter
+                (cmp)
+                (expr
+                  (const
+                    (bool)))))))))))

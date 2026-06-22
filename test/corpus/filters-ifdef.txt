@@ -1,0 +1,50 @@
+==================
+Ifdef filter
+==================
+
+param $tag: string;
+app:requests
+| ifdef($tag) { where route == $tag } else { where route != "debug" }
+
+---
+
+(source_file
+  (param
+    (param_ident
+      (identifier
+        (plain_identifier)))
+    (param_type
+      (tag_type)))
+  (query
+    (simple_query
+      (source
+        (metric_id
+          (identifier
+            (plain_identifier))
+          (metric_name
+            (identifier
+              (plain_identifier)))))
+      (ifdef_rule
+        (param_ident
+          (identifier
+            (plain_identifier)))
+        (filter_expr
+          (filter_atom
+            (identifier
+              (plain_identifier))
+            (value_filter
+              (cmp)
+              (expr
+                (param_ident
+                  (identifier
+                    (plain_identifier)))))))
+        (filter_expr
+          (filter_atom
+            (identifier
+              (plain_identifier))
+            (value_filter
+              (cmp)
+              (expr
+                (const
+                  (string
+                    (string_content)))))))))))

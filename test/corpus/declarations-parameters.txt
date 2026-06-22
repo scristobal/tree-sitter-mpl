@@ -1,0 +1,34 @@
+==================
+Parameters
+==================
+
+param $dataset: Dataset;
+param $tag: Option<string>;
+$dataset:requests
+
+---
+
+(source_file
+  (param
+    (param_ident
+      (identifier
+        (plain_identifier)))
+    (param_type
+      (param_native_type)))
+  (param
+    (param_ident
+      (identifier
+        (plain_identifier)))
+    (param_type
+      (optional_type
+        (tag_type))))
+  (query
+    (simple_query
+      (source
+        (metric_id
+          (param_ident
+            (identifier
+              (plain_identifier)))
+          (metric_name
+            (identifier
+              (plain_identifier))))))))

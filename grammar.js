@@ -99,26 +99,40 @@ module.exports = grammar({
     sample_expr: ($) => seq("sample", field("ratio", $.number)),
 
     filter_rule: ($) => seq("|", $.filter_expr),
-    filter_expr: ($) => seq(field("keyword", choice("filter", "where")), $.filter_or),
-
-    filter_or: ($) => prec.left(PREC.or, seq(
-      $.filter_and,
-      repeat(seq("or", $.filter_and)),
-    )),
-
-    filter_and: ($) => prec.left(PREC.and, seq(
-      $.filter_not,
-      repeat(seq("and", $.filter_not)),
-    )),
-
-    filter_not: ($) => choice(
-      prec(PREC.not, seq("not", $.filter_clause)),
-      $.filter_clause,
+    filter_expr: ($) => seq(
+      field("keyword", choice("filter", "where")),
+      field("condition", $._filter_condition),
     ),
 
-    filter_clause: ($) => choice(
+    _filter_condition: ($) => choice(
       $.filter_atom,
-      seq("(", $.filter_or, ")"),
+      $.parenthesized_filter,
+      $.not_filter,
+      $.and_filter,
+      $.or_filter,
+    ),
+
+    or_filter: ($) => prec.left(PREC.or, seq(
+      field("left", $._filter_condition),
+      "or",
+      field("right", $._filter_condition),
+    )),
+
+    and_filter: ($) => prec.left(PREC.and, seq(
+      field("left", $._filter_condition),
+      "and",
+      field("right", $._filter_condition),
+    )),
+
+    not_filter: ($) => prec(PREC.not, seq(
+      "not",
+      field("condition", $._filter_condition),
+    )),
+
+    parenthesized_filter: ($) => seq(
+      "(",
+      field("condition", $._filter_condition),
+      ")",
     ),
 
     filter_atom: ($) => seq(

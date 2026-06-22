@@ -1,0 +1,21 @@
+==================
+Time range
+==================
+
+app:requests[1h..]
+
+---
+
+(source_file
+  (query
+    (simple_query
+      (source
+        (metric_id
+          (identifier
+            (plain_identifier))
+          (metric_name
+            (identifier
+              (plain_identifier))))
+        (time_range
+          (time
+            (time_relative)))))))

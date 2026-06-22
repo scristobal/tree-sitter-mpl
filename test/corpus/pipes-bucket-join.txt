@@ -1,0 +1,52 @@
+==================
+Bucket and join
+==================
+
+app:latency
+| bucket by le to 1m using histogram(count, 0.5, 1)
+| join method from app:requests by method
+
+---
+
+(source_file
+  (query
+    (simple_query
+      (source
+        (metric_id
+          (identifier
+            (plain_identifier))
+          (metric_name
+            (identifier
+              (plain_identifier)))))
+      (pipe_rule
+        (bucket_by
+          (tags
+            (identifier
+              (plain_identifier)))
+          (time_relative_parameterized
+            (time_relative))
+          (bucket_fn_call
+            (bucket_fn_call_simple
+              (bucket_by_fn)
+              (bucket_specs
+                (bucket_spec)
+                (bucket_spec
+                  (number
+                    (float)))
+                (bucket_spec
+                  (number
+                    (int))))))))
+      (pipe_rule
+        (join
+          (tags
+            (identifier
+              (plain_identifier)))
+          (metric_id
+            (identifier
+              (plain_identifier))
+            (metric_name
+              (identifier
+                (plain_identifier))))
+          (tags
+            (identifier
+              (plain_identifier))))))))

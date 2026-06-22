@@ -1,0 +1,37 @@
+==================
+Map forms
+==================
+
+app:requests
+| map * 100
+| map is::lt(0.2)
+
+---
+
+(source_file
+  (query
+    (simple_query
+      (source
+        (metric_id
+          (identifier
+            (plain_identifier))
+          (metric_name
+            (identifier
+              (plain_identifier)))))
+      (pipe_rule
+        (map
+          (map_eval
+            (map_calc_op)
+            (number
+              (int)))))
+      (pipe_rule
+        (map
+          (map_fn
+            (func
+              (module
+                (identifier
+                  (plain_identifier)))
+              (identifier
+                (plain_identifier)))
+            (number
+              (float))))))))

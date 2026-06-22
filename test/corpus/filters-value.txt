@@ -1,0 +1,29 @@
+==================
+Value filter
+==================
+
+app:requests
+| where status >= 500
+
+---
+
+(source_file
+  (query
+    (simple_query
+      (source
+        (metric_id
+          (identifier
+            (plain_identifier))
+          (metric_name
+            (identifier
+              (plain_identifier)))))
+      (filter_rule
+        (filter_expr
+          (filter_atom
+            (identifier
+              (plain_identifier))
+            (value_filter
+              (cmp)
+              (expr
+                (const
+                  (int))))))))))

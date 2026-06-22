@@ -1,0 +1,23 @@
+==================
+Escaped dataset and alias
+==================
+
+`dev.metrics`:requests as request_rate
+
+---
+
+(source_file
+  (query
+    (simple_query
+      (source
+        (metric_id
+          (identifier
+            (escaped_identifier
+              (escaped_identifier_content)))
+          (metric_name
+            (identifier
+              (plain_identifier))))
+        (as_clause
+          (metric_name
+            (identifier
+              (plain_identifier))))))))

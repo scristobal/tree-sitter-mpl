@@ -1,0 +1,30 @@
+==================
+Directives
+==================
+
+set resolution = 42;
+set enabled = true;
+app:requests
+
+---
+
+(source_file
+  (directive
+    (identifier
+      (plain_identifier))
+    (const
+      (int)))
+  (directive
+    (identifier
+      (plain_identifier))
+    (const
+      (bool)))
+  (query
+    (simple_query
+      (source
+        (metric_id
+          (identifier
+            (plain_identifier))
+          (metric_name
+            (identifier
+              (plain_identifier))))))))
