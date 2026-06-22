@@ -1,6 +1,5 @@
 {
   "name": "tree-sitter-mpl",
-  "version": "0.1.0",
   "description": "Tree-sitter grammar for Axiom Metrics Processing Language (MPL)",
   "keywords": [
     "tree-sitter",

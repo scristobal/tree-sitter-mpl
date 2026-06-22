@@ -1,0 +1,212 @@
+name: Builds
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+concurrency:
+  group: builds-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  checks:
+    name: Checks and Tests
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check grammar
+        run: npm run check
+
+      - name: Run parser tests
+        run: npx tree-sitter test
+
+  native:
+    name: Native ${{ matrix.target }}
+    needs: checks
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: linux-x64
+            runner: ubuntu-24.04
+            artifact: tree-sitter-mpl-linux-x64.so
+          - target: linux-arm64
+            runner: ubuntu-24.04-arm
+            artifact: tree-sitter-mpl-linux-arm64.so
+          - target: macos-x64
+            runner: macos-15-intel
+            artifact: tree-sitter-mpl-macos-x64.dylib
+          - target: macos-arm64
+            runner: macos-15
+            artifact: tree-sitter-mpl-macos-arm64.dylib
+          - target: windows-x64
+            runner: windows-2025
+            artifact: tree-sitter-mpl-windows-x64.dll
+          - target: windows-arm64
+            runner: windows-11-arm
+            artifact: tree-sitter-mpl-windows-arm64.dll
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build parser
+        run: |
+          repo_dir="$PWD"
+          parent_dir="$(dirname "$repo_dir")"
+          repo_name="$(basename "$repo_dir")"
+          mkdir -p dist
+          mkdir -p "$HOME/.config/tree-sitter"
+          printf '{"parser-directories":["%s"]}\n' "$parent_dir" > "$HOME/.config/tree-sitter/config.json"
+          if [[ "$RUNNER_OS" != "Windows" ]]; then
+            export CC=cc
+          fi
+          cd "$parent_dir"
+          npx --prefix "$repo_dir" tree-sitter build -o "$repo_dir/dist/${{ matrix.artifact }}" "$repo_name"
+
+      - name: Upload build
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.target }}
+          path: dist/${{ matrix.artifact }}
+          if-no-files-found: error
+          retention-days: 30
+
+  wasm:
+    name: WASM
+    needs: checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build WASM parser
+        run: |
+          repo_dir="$PWD"
+          parent_dir="$(dirname "$repo_dir")"
+          repo_name="$(basename "$repo_dir")"
+          mkdir -p dist
+          mkdir -p "$HOME/.config/tree-sitter"
+          printf '{"parser-directories":["%s"]}\n' "$parent_dir" > "$HOME/.config/tree-sitter/config.json"
+          cd "$parent_dir"
+          npx --prefix "$repo_dir" tree-sitter build --wasm --docker -o "$repo_dir/dist/tree-sitter-mpl.wasm" "$repo_name"
+
+      - name: Upload build
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: wasm
+          path: dist/tree-sitter-mpl.wasm
+          if-no-files-found: error
+          retention-days: 30
+
+  gate:
+    name: Main Gate
+    needs:
+      - checks
+      - native
+      - wasm
+    if: always()
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Verify required jobs
+        run: |
+          if [[ "${{ needs.checks.result }}" != "success" ]]; then
+            echo "Checks and tests failed: ${{ needs.checks.result }}"
+            exit 1
+          fi
+          if [[ "${{ needs.native.result }}" != "success" ]]; then
+            echo "Native builds failed: ${{ needs.native.result }}"
+            exit 1
+          fi
+          if [[ "${{ needs.wasm.result }}" != "success" ]]; then
+            echo "WASM build failed: ${{ needs.wasm.result }}"
+            exit 1
+          fi
+
+  latest:
+    name: Publish Latest Release
+    needs: gate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download builds
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Update latest tag
+        run: |
+          git tag --force latest "$GITHUB_SHA"
+          git push --force origin refs/tags/latest
+
+      - name: Publish latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view latest >/dev/null 2>&1; then
+            gh release create latest \
+              --title latest \
+              --notes "Latest builds from main." \
+              --target "$GITHUB_SHA"
+          fi
+
+          gh release edit latest \
+            --title latest \
+            --notes "Latest builds from main commit $GITHUB_SHA." \
+            --target "$GITHUB_SHA" \
+            --latest
+
+          gh release upload latest dist/* --clobber
