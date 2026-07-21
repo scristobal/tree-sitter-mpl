@@ -367,7 +367,7 @@ module.exports = grammar({
       "}",
     ),
 
-    string_content: () => token.immediate(prec(1, /[^"\\$]+|\$/)),
+    string_content: () => token.immediate(/[^"\\$]+|\$/),
     escape_sequence: () => token.immediate(/\\(["\\\/bfnrt$`]|u[0-9a-fA-F]{4})/),
 
     regex: () => token(/#\/([^\/\\]|\\.)*\//),

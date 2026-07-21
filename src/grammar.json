@@ -1985,12 +1985,8 @@
     "string_content": {
       "type": "IMMEDIATE_TOKEN",
       "content": {
-        "type": "PREC",
-        "value": 1,
-        "content": {
-          "type": "PATTERN",
-          "value": "[^\"\\\\$]+|\\$"
-        }
+        "type": "PATTERN",
+        "value": "[^\"\\\\$]+|\\$"
       }
     },
     "escape_sequence": {

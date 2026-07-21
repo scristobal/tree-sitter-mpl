@@ -175,8 +175,6 @@
     "sum"))
 
 (string) @string
-(interpolation
-  ["${" "}"] @punctuation.special)
 (escape_sequence) @string.escape
 
 (regex) @string.regexp
@@ -210,6 +208,10 @@
   "["
   "]"
 ] @punctuation.bracket
+
+; Interpolation braces override both the containing string and generic braces.
+(interpolation
+  ["${" "}"] @punctuation.special)
 
 ; Angle brackets delimit Option<T>; angle comparisons are operators.
 (optional_type

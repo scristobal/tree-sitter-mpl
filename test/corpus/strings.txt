@@ -1,0 +1,45 @@
+==================
+Strings and interpolation
+==================
+
+param $name: string;
+telemetry:events
+| filter message == "hello ${$name}! costs $5"
+
+---
+
+(source_file
+  (param
+    (param_ident
+      (identifier
+        (plain_identifier)))
+    (param_type
+      (tag_type)))
+  (query
+    (simple_query
+      (source
+        (metric_id
+          (identifier
+            (plain_identifier))
+          (metric_name
+            (identifier
+              (plain_identifier)))))
+      (filter_rule
+        (filter_expr
+          (filter_atom
+            (identifier
+              (plain_identifier))
+            (value_filter
+              (cmp)
+              (expr
+                (const
+                  (string
+                    (string_content)
+                    (interpolation
+                      (expr
+                        (param_ident
+                          (identifier
+                            (plain_identifier)))))
+                    (string_content)
+                    (string_content)
+                    (string_content)))))))))))
