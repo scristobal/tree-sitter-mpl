@@ -40,8 +40,8 @@ jobs:
       - name: Check grammar
         run: npm run check
 
-      - name: Run parser tests
-        run: npx tree-sitter test
+      - name: Run parser and highlighting tests
+        run: npm test
 
   native:
     name: Native ${{ matrix.target }}
