@@ -74,7 +74,7 @@ This layout exposes both `parser/mpl.*` and `queries/mpl/highlights.scm` on `run
 
 ### Prebuilt parsers
 
-The rolling [`latest` release](https://github.com/mpl-lang-tools/tree-sitter-mpl/releases/tag/latest) contains native parsers for Linux, macOS, and Windows on x64 and arm64, plus a WASM parser. It is updated from `main` after CI checks, tests, and all builds pass; it is not a versioned stable release.
+The rolling [`latest` release](https://github.com/scristobal/tree-sitter-mpl/releases/tag/latest) contains native parsers for Linux, macOS, and Windows on x64 and arm64, plus a WASM parser. It is updated from `main` after CI checks, tests, and all builds pass; it is not a versioned stable release.
 
 For Neovim, download the matching native asset and rename it to `parser/mpl.so`, `parser/mpl.dylib`, or `parser/mpl.dll` under this clone. The runtime-path configuration above is still needed because the release asset contains the parser, while the highlight query remains in the repository.
 
