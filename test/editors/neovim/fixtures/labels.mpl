@@ -2,51 +2,51 @@
 telemetry:requests
 | filter route == "api" and status_code >= 500
 //^^^^^^ keyword
-//       ^^^^^ property
+//       ^^^^^ variable.member
 //             ^^ operator
-//                      ^^^ operator
-//                          ^^^^^^^^^^^ property
+//                      ^^^ keyword.operator
+//                          ^^^^^^^^^^^ variable.member
 //                                      ^^ operator
 | group by service, region using stats::p95
 //^^^^^ keyword
 //      ^^ keyword
-//         ^^^^^^^ property
+//         ^^^^^^^ variable.member
 //                ^ punctuation.delimiter
-//                  ^^^^^^ property
+//                  ^^^^^^ variable.member
 | bucket by le, shard to 1m using histogram(count)
 //^^^^^^ keyword
 //       ^^ keyword
-//          ^^ property
+//          ^^ variable.member
 //            ^ punctuation.delimiter
-//              ^^^^^ property
+//              ^^^^^ variable.member
 | join method, status from archive:latency by method, zone
 //^^^^ keyword
-//     ^^^^^^ property
+//     ^^^^^^ variable.member
 //           ^ punctuation.delimiter
-//             ^^^^^^ property
+//             ^^^^^^ variable.member
 //                    ^^^^ keyword
 //                         ^^^^^^^ module
 //                                ^ punctuation.delimiter
 //                                 ^^^^^^^ function
 //                                         ^^ keyword
-//                                            ^^^^^^ property
+//                                            ^^^^^^ variable.member
 //                                                  ^ punctuation.delimiter
-//                                                    ^^^^ property
+//                                                    ^^^^ variable.member
 | replace renamed = original ~ #s/old/new/
 //^^^^^^^ keyword
-//        ^^^^^^^ property
+//        ^^^^^^^ variable.member
 //                ^ operator
-//                  ^^^^^^^^ property
+//                  ^^^^^^^^ variable.member
 //                           ^ operator
-//                             ^^^^^^^^^^^ string
+//                             ^^^^^^^^^^^ string.regexp
 | replace legacy ~ #s/v1/v2/
-//        ^^^^^^ property
+//        ^^^^^^ variable.member
 //               ^ operator
-//                 ^^^^^^^^^ string
+//                 ^^^^^^^^^ string.regexp
 | extend normalized = service, fixed = "yes"
 //^^^^^^ keyword
-//       ^^^^^^^^^^ property
+//       ^^^^^^^^^^ variable.member
 //                  ^ operator
-//                    ^^^^^^^ property
+//                    ^^^^^^^ variable.member
 //                           ^ punctuation.delimiter
-//                             ^^^^^ property
+//                             ^^^^^ variable.member

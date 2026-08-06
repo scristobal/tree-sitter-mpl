@@ -2,63 +2,88 @@
 
 Tree-sitter grammar and highlighting queries for the [Axiom Metrics Processing Language (MPL)](https://axiom.co/docs/mpl).
 
-Generated parser sources are committed, so applications embedding the parser do not need Node.js or the Tree-sitter CLI. The development commands below require Node.js/npm and a C compiler; `npm ci` installs the project-local Tree-sitter CLI (currently 0.25.x).
-
-## Try highlighting
-
-Tree-sitter CLI 0.25 discovers parsers through its configuration. From the repository root:
-
-```sh
-npm ci
-npx tree-sitter init-config # only if you do not already have a config
-```
-
-Edit the generated `config.json` and add the **parent directory** containing this repository to `parser-directories`. For example, if the clone is `/home/me/src/tree-sitter-mpl`:
-
-```json
-{
-  "parser-directories": [
-    "/home/me/src"
-  ]
-}
-```
-
-Pointing `parser-directories` at the repository itself will not discover it. Confirm discovery and highlight the examples with:
-
-```sh
-npx tree-sitter dump-languages
-npx tree-sitter highlight --scope source.mpl examples/*.mpl
-```
-
-`dump-languages` should include `scope: source.mpl`. The scope, `.mpl` file type, and highlight-query path are declared in [`tree-sitter.json`](tree-sitter.json). To leave the default configuration untouched, create a separate config with the same `parser-directories` entry and pass `--config-path /path/to/config.json` to both commands.
-
-The older `tree-sitter highlight --grammar-path ...` command does not work with the project's 0.25 CLI because that flag is not available there.
-
 ## Neovim
 
-### Manual source install
+### Install with nvim-treesitter
 
-Keep the clone at a stable path. Build its committed parser source into Neovim's parser runtime directory inside the repository:
+Users of the [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter) `main` branch can register this repository as a custom language. Add this before running `:TSInstall` or `:TSUpdate`:
+
+```lua
+vim.api.nvim_create_autocmd("User", {
+  pattern = "TSUpdate",
+  callback = function()
+    require("nvim-treesitter.parsers").mpl = {
+      install_info = {
+        url = "https://github.com/scristobal/tree-sitter-mpl",
+        queries = "queries/neovim",
+      },
+    }
+  end,
+})
+```
+
+Install the parser and query with:
+
+```vim
+:TSInstall mpl
+```
+
+This method requires Neovim 0.12+, Tree-sitter CLI 0.26.1+, and a C compiler.
+
+### Build from source
+
+If `nvim-treesitter` is not available, build and install the parser and highlighting query from source.
+
+From the repository root on Linux:
 
 ```sh
 npm ci
-mkdir -p parser
-CC=cc npx tree-sitter build -o parser/mpl.so
+site="$HOME/.local/share/nvim/site"
+mkdir -p "$site/parser" "$site/queries/mpl"
+CC=cc npx tree-sitter build -o "$site/parser/mpl.so"
+cp queries/neovim/highlights.scm "$site/queries/mpl/highlights.scm"
 ```
 
-Use `parser/mpl.dylib` instead on macOS. On Windows, omit the `CC=cc` environment assignment and output `parser/mpl.dll`. Parser generation is not required just to install it.
+On macOS:
 
-Add the repository to Neovim's runtime path, register the file type, and start the built-in Tree-sitter highlighter:
+```sh
+npm ci
+site="$HOME/.local/share/nvim/site"
+mkdir -p "$site/parser" "$site/queries/mpl"
+CC=cc npx tree-sitter build -o "$site/parser/mpl.dylib"
+cp queries/neovim/highlights.scm "$site/queries/mpl/highlights.scm"
+```
+
+On Windows, using PowerShell:
+
+```powershell
+npm ci
+$site = Join-Path $env:LOCALAPPDATA "nvim-data\site"
+New-Item -ItemType Directory -Force -Path "$site\parser", "$site\queries\mpl" | Out-Null
+npx tree-sitter build -o "$site\parser\mpl.dll"
+Copy-Item queries\neovim\highlights.scm "$site\queries\mpl\highlights.scm"
+```
+
+The default installation paths are:
+
+| Platform | Native parser | Highlighting query |
+| --- | --- | --- |
+| Linux | `~/.local/share/nvim/site/parser/mpl.so` | `~/.local/share/nvim/site/queries/mpl/highlights.scm` |
+| macOS | `~/.local/share/nvim/site/parser/mpl.dylib` | `~/.local/share/nvim/site/queries/mpl/highlights.scm` |
+| Windows | `%LOCALAPPDATA%\nvim-data\site\parser\mpl.dll` | `%LOCALAPPDATA%\nvim-data\site\queries\mpl\highlights.scm` |
+
+If Neovim's data directory is customized, run this inside Neovim to print the site directory:
+
+```vim
+:lua print(vim.fn.stdpath("data") .. "/site")
+```
+
+### Configuration
+
+Regardless of whether MPL was installed with `nvim-treesitter` or manually, add this to `init.lua` to detect `.mpl` files and start Tree-sitter highlighting:
 
 ```lua
-local mpl_root = "/absolute/path/to/tree-sitter-mpl"
-
-vim.opt.runtimepath:prepend(mpl_root)
-vim.filetype.add({
-  extension = {
-    mpl = "mpl",
-  },
-})
+vim.filetype.add({ extension = { mpl = "mpl" } })
 
 local group = vim.api.nvim_create_augroup("MplTreesitter", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
@@ -70,17 +95,63 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 ```
 
-This layout exposes both `parser/mpl.*` and `queries/mpl/highlights.scm` on `runtimepath`. Restart Neovim, open an `.mpl` file, and verify that `:set filetype?` reports `mpl`.
+Restart Neovim and open an `.mpl` file. `:set filetype?` should report `mpl`.
 
-### Prebuilt parsers
+## Helix
 
-The rolling [`latest` release](https://github.com/scristobal/tree-sitter-mpl/releases/tag/latest) contains native parsers for Linux, macOS, and Windows on x64 and arm64, plus a WASM parser. It is updated from `main` after CI checks, tests, and all builds pass; it is not a versioned stable release.
+Add MPL to the Helix language configuration for your platform:
 
-For Neovim, download the matching native asset and rename it to `parser/mpl.so`, `parser/mpl.dylib`, or `parser/mpl.dll` under this clone. The runtime-path configuration above is still needed because the release asset contains the parser, while the highlight query remains in the repository.
+| Platform | File |
+| --- | --- |
+| Linux | `~/.config/helix/languages.toml` |
+| macOS | `~/.config/helix/languages.toml` |
+| Windows | `%APPDATA%\helix\languages.toml` |
+
+```toml
+[[language]]
+name = "mpl"
+scope = "source.mpl"
+file-types = ["mpl"]
+comment-tokens = ["//"]
+grammar = "mpl"
+
+[[grammar]]
+name = "mpl"
+source = { git = "https://github.com/scristobal/tree-sitter-mpl", rev = "main" }
+```
+
+Fetch and build the grammar:
+
+```sh
+hx --grammar fetch
+hx --grammar build
+```
+
+On Linux and macOS, install the Helix highlighting query with:
+
+```sh
+query_dir="$HOME/.config/helix/runtime/queries/mpl"
+mkdir -p "$query_dir"
+curl --fail --location \
+  https://raw.githubusercontent.com/scristobal/tree-sitter-mpl/main/queries/helix/highlights.scm \
+  -o "$query_dir/highlights.scm"
+```
+
+On Windows, using PowerShell:
+
+```powershell
+$queryDir = Join-Path $env:APPDATA "helix\runtime\queries\mpl"
+New-Item -ItemType Directory -Force -Path $queryDir | Out-Null
+Invoke-WebRequest `
+  https://raw.githubusercontent.com/scristobal/tree-sitter-mpl/main/queries/helix/highlights.scm `
+  -OutFile "$queryDir\highlights.scm"
+```
+
+Restart Helix and run `hx --health mpl` to verify the grammar and highlighting query.
 
 ## Development
 
-Install exact dependencies and run the same grammar check and parser test commands used by CI:
+Development requires Node.js/npm and a C compiler.
 
 ```sh
 npm ci
@@ -88,25 +159,20 @@ npm run check
 npm test
 ```
 
-`npm test` runs `tree-sitter test`: it checks parser cases in `test/corpus/` and any highlighting fixtures in `test/highlight/`.
+`npm test` runs the parser corpus and Tree-sitter CLI highlighting fixtures. Neovim and Helix fixtures require Neovim and Rust/Git, respectively:
 
-For a highlighting change:
+```sh
+npm run test:neovim
+npm run test:helix
+```
 
-1. Edit `queries/mpl/highlights.scm`.
-2. Add or update a focused `.mpl` fixture in `test/highlight/`, using Tree-sitter caret comments to assert the expected `@capture` names.
-3. Run `npm test` for assertions, then use the highlighting command above for a visual smoke check.
+Highlighting changes should update each query and its fixtures under `test/highlight/` and `test/editors/`.
 
-After changing `grammar.js`, regenerate and review the committed files under `src/`:
+After changing `grammar.js`, regenerate the committed parser sources:
 
 ```sh
 npm run generate
 git diff -- src
 ```
 
-A native build is an optional additional smoke check on Linux or macOS:
-
-```sh
-CC=cc npx tree-sitter build
-```
-
-On Windows, run `npx tree-sitter build` instead. Do not commit native parser libraries; they are platform-dependent release artifacts.
+Generated parser sources are committed so make sure include those in the next commit.

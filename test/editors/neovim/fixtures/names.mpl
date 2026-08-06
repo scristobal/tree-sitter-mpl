@@ -24,7 +24,7 @@
 //                             ^^ punctuation.delimiter
 //                               ^^^^ module
 //                                   ^^ punctuation.delimiter
-//                                     ^^^^^^ function
+//                                     ^^^^^^ function.call
 | as combined
 // <- punctuation.delimiter
 //^^ keyword

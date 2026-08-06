@@ -1,19 +1,19 @@
 // Directive and parameter declarations retain their semantic roles.
 set resolution = default_resolution;
-// <- keyword
+// <- keyword.directive
 //  ^^^^^^^^^^ attribute
 //             ^ operator
 //               ^^^^^^^^^^^^^^^^^^ constant
 //                                 ^ punctuation.delimiter
 
 set enabled = true;
-// <- keyword
+// <- keyword.directive
 //  ^^^^^^^ attribute
 //          ^ operator
-//            ^^^^ constant.builtin
+//            ^^^^ boolean
 
 param $dataset: Dataset;
-// <- keyword
+// <- keyword.directive
 //    ^ punctuation.special
 //     ^^^^^^^ variable.parameter
 //            ^ punctuation.delimiter

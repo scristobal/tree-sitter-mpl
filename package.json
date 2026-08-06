@@ -3,6 +3,8 @@
   "scripts": {
     "check": "tsc --allowJs --checkJs --noEmit grammar.js",
     "test": "tree-sitter test",
+    "test:neovim": "test/editors/neovim/run.sh",
+    "test:helix": "test/editors/helix/run.sh",
     "generate": "tree-sitter generate",
     "build": "tree-sitter build"
   },

@@ -1,0 +1,135 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  checks:
+    name: Checks and Tests
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check grammar
+        run: npm run check
+
+      - name: Run parser and Tree-sitter CLI highlighting tests
+        run: npm test
+
+  neovim:
+    name: Neovim Highlight Queries
+    needs: checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Neovim
+        env:
+          NVIM_VERSION: v0.12.4
+        run: |
+          curl --fail --location --retry 3 \
+            "https://github.com/neovim/neovim/releases/download/$NVIM_VERSION/nvim-linux-x86_64.tar.gz" \
+            -o "$RUNNER_TEMP/nvim.tar.gz"
+          tar -xzf "$RUNNER_TEMP/nvim.tar.gz" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/nvim-linux-x86_64/bin" >> "$GITHUB_PATH"
+
+      - name: Run Neovim highlighting tests
+        run: npm run test:neovim
+
+  helix:
+    name: Helix Highlight Queries
+    needs: checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout Helix
+        uses: actions/checkout@v4
+        with:
+          repository: helix-editor/helix
+          ref: 079a789e8cb08ead67f19e1971a1b7438b37354b
+          path: .helix
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache Rust build
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: .helix -> target
+
+      - name: Run Helix query and highlighting tests
+        env:
+          HELIX_SOURCE: ${{ github.workspace }}/.helix
+        run: npm run test:helix
+
+  gate:
+    name: Main Gate
+    needs:
+      - checks
+      - neovim
+      - helix
+    if: always()
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Verify required jobs
+        run: |
+          if [[ "${{ needs.checks.result }}" != "success" ]]; then
+            echo "Checks and tests failed: ${{ needs.checks.result }}"
+            exit 1
+          fi
+          if [[ "${{ needs.neovim.result }}" != "success" ]]; then
+            echo "Neovim highlighting tests failed: ${{ needs.neovim.result }}"
+            exit 1
+          fi
+          if [[ "${{ needs.helix.result }}" != "success" ]]; then
+            echo "Helix highlighting tests failed: ${{ needs.helix.result }}"
+            exit 1
+          fi

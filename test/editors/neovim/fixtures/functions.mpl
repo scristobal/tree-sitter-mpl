@@ -12,20 +12,20 @@ telemetry:latency
 //                               ^^ punctuation.delimiter
 //                                 ^^^^^^ module
 //                                       ^^ punctuation.delimiter
-//                                         ^^^^^^^^^^ function
+//                                         ^^^^^^^^^^ function.call
 | group by service using summarize
 // <- punctuation.delimiter
 //^^^^^ keyword
 //      ^^ keyword
-//         ^^^^^^^ property
+//         ^^^^^^^ variable.member
 //                 ^^^^^ keyword
-//                       ^^^^^^^^^ function
+//                       ^^^^^^^^^ function.call
 | map math::scale(2)
 // <- punctuation.delimiter
 //^^^ keyword
 //    ^^^^ module
 //        ^^ punctuation.delimiter
-//          ^^^^^ function
+//          ^^^^^ function.call
 //               ^ punctuation.bracket
 //                ^ number
 //                 ^ punctuation.bracket

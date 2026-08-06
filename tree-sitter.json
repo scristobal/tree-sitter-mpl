@@ -8,7 +8,7 @@
       "file-types": [
         "mpl"
       ],
-      "highlights": "queries/mpl/highlights.scm",
+      "highlights": "queries/highlights.scm",
       "injection-regex": "^mpl$"
     }
   ],

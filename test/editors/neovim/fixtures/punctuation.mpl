@@ -19,31 +19,31 @@ telemetry:requests[1h..]
 // <- punctuation.delimiter
 //^^^^^^ keyword
 //       ^ punctuation.bracket
-//        ^^^^^ property
+//        ^^^^^ variable.member
 //              ^ operator
 //                ^ punctuation.special
 //                 ^^^^^ variable.parameter
-//                       ^^^ operator
-//                           ^^^^^ property
+//                       ^^^ keyword.operator
+//                           ^^^^^ variable.member
 //                                 ^ operator
 //                                    ^ punctuation.bracket
-//                                      ^^ operator
-//                                         ^^^^^ property
+//                                      ^^ keyword.operator
+//                                         ^^^^^ variable.member
 //                                               ^^ operator
 | where not state != "off" and lower <= 1 and upper >= 2 and ready is bool
 //^^^^^ keyword
-//      ^^^ operator
-//          ^^^^^ property
+//      ^^^ keyword.operator
+//          ^^^^^ variable.member
 //                ^^ operator
-//                         ^^^ operator
-//                             ^^^^^ property
+//                         ^^^ keyword.operator
+//                             ^^^^^ variable.member
 //                                   ^^ operator
-//                                        ^^^ operator
-//                                            ^^^^^ property
+//                                        ^^^ keyword.operator
+//                                            ^^^^^ variable.member
 //                                                  ^^ operator
-//                                                       ^^^ operator
-//                                                           ^^^^^ property
-//                                                                 ^^ operator
+//                                                       ^^^ keyword.operator
+//                                                           ^^^^^ variable.member
+//                                                                 ^^ keyword.operator
 //                                                                    ^^^^ type.builtin
 | ifdef($limit) { filter flag == true } else { where flag != false }
 //^^^^^ keyword

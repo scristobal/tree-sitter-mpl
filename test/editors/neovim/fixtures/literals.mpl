@@ -6,28 +6,28 @@ set decimal = -3.5E+2;
 set infinity = +inf;
 //             ^^^^ number
 set enabled = false;
-//            ^^^^^ constant.builtin
+//            ^^^^^ boolean
 
 param $name: string;
 param $fallback: string;
 
 telemetry:events
 | filter message == "hello\n \u0041 \$"
-//       ^^^^^^^ property
+//       ^^^^^^^ variable.member
 //               ^^ operator
 //                  ^ string
 //                   ^^^^^ string
-//                        ^^ string
-//                           ^^^^^^ string
-//                                  ^^ string
+//                        ^^ string.escape
+//                           ^^^^^^ string.escape
+//                                  ^^ string.escape
 //                                    ^ string
 | filter path == #/^\/api\/(v1|v2)$/
 //            ^^ operator
-//               ^^^^^^^^^^^^^^^^^^^ string
+//               ^^^^^^^^^^^^^^^^^^^ string.regexp
 | replace route ~ #s/^\/api/(service)/
-//        ^^^^^ property
+//        ^^^^^ variable.member
 //              ^ operator
-//                ^^^^^^^^^^^^^^^^^^^^ string
+//                ^^^^^^^^^^^^^^^^^^^^ string.regexp
 
 // ordinary comment
 // ^^^^^^^^ comment
