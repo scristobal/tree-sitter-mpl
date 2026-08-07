@@ -4,9 +4,11 @@ Tree-sitter grammar and highlighting queries for the [Axiom Metrics Processing L
 
 ## Neovim
 
+Requires Neovim 0.12+, Tree-sitter CLI 0.26.1+, and a C compiler.
+
 ### Install with nvim-treesitter
 
-Users of the [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter) `main` branch can register this repository as a custom language. Add this before running `:TSInstall` or `:TSUpdate`:
+Users of the [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter) `main` branch can register this repository as a custom language.
 
 ```lua
 vim.api.nvim_create_autocmd("User", {
@@ -27,8 +29,6 @@ Install the parser and query with:
 ```vim
 :TSInstall mpl
 ```
-
-This method requires Neovim 0.12+, Tree-sitter CLI 0.26.1+, and a C compiler.
 
 ### Build from source
 
@@ -64,20 +64,6 @@ npx tree-sitter build -o "$site\parser\mpl.dll"
 Copy-Item queries\neovim\highlights.scm "$site\queries\mpl\highlights.scm"
 ```
 
-The default installation paths are:
-
-| Platform | Native parser | Highlighting query |
-| --- | --- | --- |
-| Linux | `~/.local/share/nvim/site/parser/mpl.so` | `~/.local/share/nvim/site/queries/mpl/highlights.scm` |
-| macOS | `~/.local/share/nvim/site/parser/mpl.dylib` | `~/.local/share/nvim/site/queries/mpl/highlights.scm` |
-| Windows | `%LOCALAPPDATA%\nvim-data\site\parser\mpl.dll` | `%LOCALAPPDATA%\nvim-data\site\queries\mpl\highlights.scm` |
-
-If Neovim's data directory is customized, run this inside Neovim to print the site directory:
-
-```vim
-:lua print(vim.fn.stdpath("data") .. "/site")
-```
-
 ### Configuration
 
 Regardless of whether MPL was installed with `nvim-treesitter` or manually, add this to `init.lua` to detect `.mpl` files and start Tree-sitter highlighting:
@@ -101,12 +87,6 @@ Restart Neovim and open an `.mpl` file. `:set filetype?` should report `mpl`.
 
 Add MPL to the Helix language configuration for your platform:
 
-| Platform | File |
-| --- | --- |
-| Linux | `~/.config/helix/languages.toml` |
-| macOS | `~/.config/helix/languages.toml` |
-| Windows | `%APPDATA%\helix\languages.toml` |
-
 ```toml
 [[language]]
 name = "mpl"
@@ -127,24 +107,20 @@ hx --grammar fetch
 hx --grammar build
 ```
 
-On Linux and macOS, install the Helix highlighting query with:
+From the repository root on Linux and macOS:
 
 ```sh
 query_dir="$HOME/.config/helix/runtime/queries/mpl"
 mkdir -p "$query_dir"
-curl --fail --location \
-  https://raw.githubusercontent.com/scristobal/tree-sitter-mpl/main/queries/helix/highlights.scm \
-  -o "$query_dir/highlights.scm"
+cp queries/helix/highlights.scm "$query_dir/highlights.scm"
 ```
 
-On Windows, using PowerShell:
+On Windows, using PowerShell from the repository root:
 
 ```powershell
 $queryDir = Join-Path $env:APPDATA "helix\runtime\queries\mpl"
 New-Item -ItemType Directory -Force -Path $queryDir | Out-Null
-Invoke-WebRequest `
-  https://raw.githubusercontent.com/scristobal/tree-sitter-mpl/main/queries/helix/highlights.scm `
-  -OutFile "$queryDir\highlights.scm"
+Copy-Item queries\helix\highlights.scm "$queryDir\highlights.scm"
 ```
 
 Restart Helix and run `hx --health mpl` to verify the grammar and highlighting query.
