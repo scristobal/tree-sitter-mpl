@@ -5,6 +5,7 @@
     "test": "tree-sitter test",
     "test:neovim": "test/editors/neovim/run.sh",
     "test:helix": "test/editors/helix/run.sh",
+    "test:zed": "test/editors/zed/run.sh",
     "generate": "tree-sitter generate",
     "build": "tree-sitter build"
   },

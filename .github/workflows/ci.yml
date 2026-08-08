@@ -43,6 +43,9 @@ jobs:
       - name: Run parser and Tree-sitter CLI highlighting tests
         run: npm test
 
+      - name: Run Zed Tree-sitter query tests
+        run: npm run test:zed
+
   neovim:
     name: Neovim Highlight Queries
     needs: checks
