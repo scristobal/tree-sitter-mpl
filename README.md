@@ -37,30 +37,27 @@ If `nvim-treesitter` is not available, build and install the parser and highligh
 From the repository root on Linux:
 
 ```sh
-npm ci
 site="$HOME/.local/share/nvim/site"
 mkdir -p "$site/parser" "$site/queries/mpl"
-CC=cc npx tree-sitter build -o "$site/parser/mpl.so"
+CC=cc tree-sitter build -o "$site/parser/mpl.so"
 cp queries/neovim/highlights.scm "$site/queries/mpl/highlights.scm"
 ```
 
 On macOS:
 
 ```sh
-npm ci
 site="$HOME/.local/share/nvim/site"
 mkdir -p "$site/parser" "$site/queries/mpl"
-CC=cc npx tree-sitter build -o "$site/parser/mpl.dylib"
+CC=cc tree-sitter build -o "$site/parser/mpl.dylib"
 cp queries/neovim/highlights.scm "$site/queries/mpl/highlights.scm"
 ```
 
 On Windows, using PowerShell:
 
 ```powershell
-npm ci
 $site = Join-Path $env:LOCALAPPDATA "nvim-data\site"
 New-Item -ItemType Directory -Force -Path "$site\parser", "$site\queries\mpl" | Out-Null
-npx tree-sitter build -o "$site\parser\mpl.dll"
+tree-sitter build -o "$site\parser\mpl.dll"
 Copy-Item queries\neovim\highlights.scm "$site\queries\mpl\highlights.scm"
 ```
 
@@ -127,27 +124,18 @@ Restart Helix and run `hx --health mpl` to verify the grammar and highlighting q
 
 ## Development
 
-Development requires Node.js/npm and a C compiler.
+Development requires the Tree-sitter CLI and a C compiler.
 
 ```sh
-npm ci
-npm run check
-npm test
+test/run.sh
 ```
 
-`npm test` runs the parser corpus and Tree-sitter CLI highlighting fixtures. Neovim and Helix fixtures require Neovim and Rust/Git, respectively:
-
-```sh
-npm run test:neovim
-npm run test:helix
-```
-
-Highlighting changes should update each query and its fixtures under `test/highlight/` and `test/editors/`.
+`test/run.sh` runs the parser corpus and executes every editor-specific query against the example MPL files.
 
 After changing `grammar.js`, regenerate the committed parser sources:
 
 ```sh
-npm run generate
+tree-sitter generate --js-runtime native
 git diff -- src
 ```
 

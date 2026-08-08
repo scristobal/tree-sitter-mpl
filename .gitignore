@@ -3,4 +3,3 @@
 *.dylib
 *.dll
 build/
-node_modules/

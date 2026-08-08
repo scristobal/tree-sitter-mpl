@@ -11,9 +11,9 @@
   "}" @close)
 
 (string
-  "\"" @open
-  "\"" @close)
+  . "\"" @open
+  "\"" @close .)
 
 (escaped_identifier
-  "`" @open
-  "`" @close)
+  . "`" @open
+  "`" @close .)
